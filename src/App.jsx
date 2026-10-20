@@ -267,6 +267,7 @@ export default function App() {
                 isLoading={isLoading}
                 apiError={apiError}
                 onDiscoverClick={() => handleNavChange('discover')}
+                onNavChange={handleNavChange}
               />
             }
           />

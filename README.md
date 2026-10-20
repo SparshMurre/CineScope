@@ -9,6 +9,7 @@ Designed with a dark cinematic theme and built with pure React, React Router, an
 ## Features
 
 - **Dynamic Movie Catalog:** Curated collection of cinema titles with ratings, release year, runtime, genres, synopsis, and poster artwork.
+- **AI-Powered Movie Matcher:** Describe what you want to watch in natural language (moods, vibes, plot concepts) and receive structured recommendations grounded in CineScope's library with tailored match reasons and relevance scores.
 - **OMDb API Live Search:** Real-time, debounced search (450ms) querying the OMDb API with `AbortController` cancellation to discard stale requests.
 - **Offline / Local Mock Fallback:** When searching without an active OMDb API key, CineScope gracefully falls back to searching its local mock catalog and displays an informative banner.
 - **Genre & Sort Filters:** Filter by genre chips (Sci-Fi, Action, Drama, etc.) and sort by Rating (Highest first), Year (Newest/Oldest), or Title (A to Z).
@@ -61,13 +62,18 @@ Create a `.env` file in the project root by copying the template:
 cp .env.example .env
 ```
 
-Open `.env` and add your free OMDb API key:
+Open `.env` and add your keys:
 
 ```env
+# Client-side OMDb key (for movie catalog search)
 VITE_OMDB_API_KEY=your_omdb_api_key_here
+
+# Server-side Gemini API key (optional, for live AI movie recommendations)
+# Kept server-side only; never bundled into or accessible by client React code
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-> **Note:** If you do not have an API key, you can get a free key at [omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx). Even without a key, the application will run and fall back to local mock data automatically.
+> **Note on AI Recommendations:** If `GEMINI_API_KEY` is omitted, the recommendation endpoint automatically runs in high-precision local fallback mode, grounding recommendations directly in CineScope's catalog without making external requests.
 
 ### 3. Run the Development Server
 
@@ -82,6 +88,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ## Verification & Build Commands
 
 ```bash
+# Run automated test suite (Vitest + React Testing Library)
+npm test
+
+# Run tests with V8 code coverage report
+npm run test:coverage
+
 # Run ESLint to verify code quality and React hook rules
 npm run lint
 

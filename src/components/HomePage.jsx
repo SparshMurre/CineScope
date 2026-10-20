@@ -1,6 +1,7 @@
 import HeroBanner from './HeroBanner.jsx'
 import FilterControls from './FilterControls.jsx'
 import MovieGrid from './MovieGrid.jsx'
+import AiRecommender from './AiRecommender.jsx'
 import { GENRES } from '../data/mockMovies.js'
 
 export default function HomePage({
@@ -23,7 +24,18 @@ export default function HomePage({
   isLoading,
   apiError,
   onDiscoverClick,
+  onNavChange,
 }) {
+  // Dedicated view for AI Recommendations
+  if (activeNav === 'ai-recs') {
+    return (
+      <AiRecommender
+        favoriteIds={favoriteIds}
+        onToggleFavorite={onToggleFavorite}
+      />
+    )
+  }
+
   return (
     <>
       {/* Spotlight Hero Banner (shown on discover or top-rated when no active search) */}
@@ -34,6 +46,31 @@ export default function HomePage({
           onToggleFavorite={onToggleFavorite}
           onExploreClick={onExploreClick}
         />
+      )}
+
+      {/* AI Discovery Teaser Banner on Discover Tab */}
+      {activeNav === 'discover' && !searchQuery.trim() && onNavChange && (
+        <aside
+          className="ai-discovery-teaser"
+          onClick={() => onNavChange('ai-recs')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onNavChange('ai-recs')
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          aria-label="Open AI Movie Matcher"
+        >
+          <div className="teaser-content">
+            <span className="teaser-badge">✨ AI Cinema Matcher</span>
+            <span className="teaser-text">
+              Looking for a specific vibe or mood? Describe it in plain words and get instant grounded recommendations.
+            </span>
+          </div>
+          <span className="teaser-action">Try AI Match &rarr;</span>
+        </aside>
       )}
 
       {/* Dedicated banner when viewing Favorites tab */}

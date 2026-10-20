@@ -53,6 +53,13 @@ export default function Footer({ onNavChange }) {
           <button
             type="button"
             className="footer-link"
+            onClick={() => onNavChange('ai-recs')}
+          >
+            AI Match
+          </button>
+          <button
+            type="button"
+            className="footer-link"
             onClick={() => onNavChange('favorites')}
           >
             Favorites

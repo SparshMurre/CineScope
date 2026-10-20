@@ -94,6 +94,22 @@ export default function Navbar({
 
           <button
             type="button"
+            className={`nav-item nav-ai ${activeNav === 'ai-recs' ? 'is-active' : ''}`}
+            onClick={() => handleNavClick('ai-recs')}
+          >
+            <svg
+              className="nav-ai-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M12 2L9.5 8.5L3 11L9.5 13.5L12 20L14.5 13.5L21 11L14.5 8.5L12 2Z" />
+            </svg>
+            <span>AI Match</span>
+          </button>
+
+          <button
+            type="button"
             className={`nav-item nav-favorites ${activeNav === 'favorites' ? 'is-active' : ''}`}
             onClick={() => handleNavClick('favorites')}
           >
