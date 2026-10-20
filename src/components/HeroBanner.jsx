@@ -1,5 +1,18 @@
 import { useState } from 'react'
 
+function getResponsiveBackdrop(url) {
+  if (!url) return { src: '' }
+  if (url.includes('images.unsplash.com')) {
+    const baseUrl = url.split('?')[0]
+    return {
+      src: `${baseUrl}?auto=format&fit=crop&w=1280&q=80`,
+      srcSet: `${baseUrl}?auto=format&fit=crop&w=640&q=75 640w, ${baseUrl}?auto=format&fit=crop&w=1024&q=75 1024w, ${baseUrl}?auto=format&fit=crop&w=1600&q=80 1600w`,
+      sizes: '100vw',
+    }
+  }
+  return { src: url }
+}
+
 export default function HeroBanner({
   movie,
   isFavorite,
@@ -18,15 +31,24 @@ export default function HeroBanner({
     }, 3500)
   }
 
+  const backdrop = getResponsiveBackdrop(movie.backdropUrl)
+
   return (
     <section className="hero-banner" aria-label="Featured Movie Spotlight">
       {/* Background Backdrop Image with Gradient */}
       <div className="hero-backdrop-wrapper">
         {!backdropError ? (
           <img
-            src={movie.backdropUrl}
+            src={backdrop.src}
+            srcSet={backdrop.srcSet}
+            sizes={backdrop.sizes}
             alt=""
             className="hero-backdrop-img"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width="1600"
+            height="900"
             onError={() => setBackdropError(true)}
           />
         ) : (

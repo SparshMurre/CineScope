@@ -1,6 +1,19 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+function getResponsivePoster(url) {
+  if (!url) return { src: '' }
+  if (url.includes('images.unsplash.com')) {
+    const baseUrl = url.split('?')[0]
+    return {
+      src: `${baseUrl}?auto=format&fit=crop&w=400&q=75`,
+      srcSet: `${baseUrl}?auto=format&fit=crop&w=240&q=75 240w, ${baseUrl}?auto=format&fit=crop&w=400&q=75 400w, ${baseUrl}?auto=format&fit=crop&w=600&q=80 600w`,
+      sizes: '(max-width: 600px) 45vw, (max-width: 900px) 220px, 260px',
+    }
+  }
+  return { src: url }
+}
+
 export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
   const [imgError, setImgError] = useState(false)
   const navigate = useNavigate()
@@ -40,10 +53,15 @@ export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
       <div className="movie-poster-wrapper">
         {!imgError && movie.posterUrl ? (
           <img
-            src={movie.posterUrl}
+            src={getResponsivePoster(movie.posterUrl).src}
+            srcSet={getResponsivePoster(movie.posterUrl).srcSet}
+            sizes={getResponsivePoster(movie.posterUrl).sizes}
             alt={`${movie.title} poster`}
             className="movie-poster-img"
             loading="lazy"
+            decoding="async"
+            width="300"
+            height="450"
             onError={() => setImgError(true)}
           />
         ) : (
